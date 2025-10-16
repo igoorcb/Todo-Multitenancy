@@ -20,17 +20,14 @@ class TenantSetupCommand extends Command
         $this->newLine();
 
         $tenantName = $this->ask('Enter tenant name');
-        $tenantDomain = $this->ask('Enter tenant domain');
-        $tenantDatabase = $this->ask('Enter tenant database (optional)', 'main');
+        $tenantSlug = $this->ask('Enter tenant slug (unique identifier)', \Illuminate\Support\Str::slug($tenantName ?? 'tenant'));
 
         $validator = Validator::make([
             'name' => $tenantName,
-            'domain' => $tenantDomain,
-            'database' => $tenantDatabase,
+            'slug' => $tenantSlug,
         ], [
             'name' => ['required', 'string', 'max:255'],
-            'domain' => ['required', 'string', 'max:255', 'unique:tenants,domain'],
-            'database' => ['required', 'string', 'max:255'],
+            'slug' => ['required', 'string', 'max:255', 'unique:tenants,slug', 'alpha_dash'],
         ]);
 
         if ($validator->fails()) {
@@ -43,8 +40,7 @@ class TenantSetupCommand extends Command
 
         $tenant = Tenant::create([
             'name' => $tenantName,
-            'domain' => $tenantDomain,
-            'database' => $tenantDatabase,
+            'slug' => $tenantSlug,
         ]);
 
         $this->info("Tenant '{$tenant->name}' created successfully!");
@@ -89,12 +85,12 @@ class TenantSetupCommand extends Command
         $this->info("Admin user '{$user->name}' created successfully!");
         $this->newLine();
         $this->table(
-            ['Tenant ID', 'Tenant Name', 'Domain', 'User ID', 'User Name', 'Email'],
+            ['Tenant ID', 'Tenant Name', 'Slug', 'User ID', 'User Name', 'Email'],
             [
                 [
                     $tenant->id,
                     $tenant->name,
-                    $tenant->domain,
+                    $tenant->slug,
                     $user->id,
                     $user->name,
                     $user->email,
