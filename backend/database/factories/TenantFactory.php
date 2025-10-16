@@ -8,10 +8,10 @@ class TenantFactory extends Factory
 {
     public function definition(): array
     {
+        $name = fake()->company();
         return [
-            'name' => fake()->company(),
-            'domain' => fake()->unique()->domainName(),
-            'database' => 'tenant_' . fake()->unique()->slug(),
+            'name' => $name,
+            'slug' => fake()->unique()->slug() . '-' . strtolower(substr(md5($name), 0, 6)),
         ];
     }
 }

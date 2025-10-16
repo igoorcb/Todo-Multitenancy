@@ -33,13 +33,11 @@ test('tenant can have tasks', function () {
 test('tenant has correct fillable attributes', function () {
     $tenant = Tenant::factory()->create([
         'name' => 'Test Company',
-        'domain' => 'testcompany.com',
-        'database' => 'tenant_test',
+        'slug' => 'test-company-abc123',
     ]);
 
     expect($tenant->name)->toBe('Test Company');
-    expect($tenant->domain)->toBe('testcompany.com');
-    expect($tenant->database)->toBe('tenant_test');
+    expect($tenant->slug)->toBe('test-company-abc123');
 });
 
 test('tenant users relationship returns correct type', function () {

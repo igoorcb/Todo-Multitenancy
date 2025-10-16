@@ -4,17 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
     public function register(RegisterRequest $request): JsonResponse
     {
+        $tenant = Tenant::create([
+            'name' => $request->tenant_name,
+            'slug' => Str::slug($request->tenant_name) . '-' . Str::random(6),
+        ]);
+
         $user = User::create([
-            'tenant_id' => $request->tenant_id,
+            'tenant_id' => $tenant->id,
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),

@@ -4,10 +4,8 @@ use App\Models\Tenant;
 use App\Models\User;
 
 test('user can register with valid data', function () {
-    $tenant = Tenant::factory()->create();
-
     $response = $this->postJson('/api/auth/register', [
-        'tenant_id' => $tenant->id,
+        'tenant_name' => 'Test Company',
         'name' => 'Test User',
         'email' => 'test@example.com',
         'password' => 'password123',
@@ -24,7 +22,10 @@ test('user can register with valid data', function () {
 
     $this->assertDatabaseHas('users', [
         'email' => 'test@example.com',
-        'tenant_id' => $tenant->id,
+    ]);
+
+    $this->assertDatabaseHas('tenants', [
+        'name' => 'Test Company',
     ]);
 });
 
@@ -78,7 +79,7 @@ test('user cannot register with duplicate email', function () {
     ]);
 
     $response = $this->postJson('/api/auth/register', [
-        'tenant_id' => $tenant->id,
+        'tenant_name' => 'Another Company',
         'name' => 'Another User',
         'email' => 'test@example.com',
         'password' => 'password123',
