@@ -125,7 +125,7 @@ test('download returns 404 for non-existent file', function () {
     $tenant = Tenant::factory()->create();
     $user = User::factory()->create(['tenant_id' => $tenant->id]);
 
-    $filename = "non_existent_file.xlsx";
+    $filename = "tasks_export_{$tenant->id}_{$user->id}_" . time() . ".xlsx";
 
     $response = $this->actingAs($user, 'api')
         ->get("/api/exports/tasks/{$filename}/download");
@@ -133,5 +133,22 @@ test('download returns 404 for non-existent file', function () {
     $response->assertStatus(404)
         ->assertJson([
             'message' => 'File not found or still processing',
+        ]);
+});
+
+test('download returns 400 for invalid filename', function () {
+    Storage::fake();
+
+    $tenant = Tenant::factory()->create();
+    $user = User::factory()->create(['tenant_id' => $tenant->id]);
+
+    $filename = "invalid_filename.xlsx";
+
+    $response = $this->actingAs($user, 'api')
+        ->get("/api/exports/tasks/{$filename}/download");
+
+    $response->assertStatus(400)
+        ->assertJson([
+            'message' => 'Invalid filename',
         ]);
 });

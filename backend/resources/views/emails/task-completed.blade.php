@@ -2,22 +2,22 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Task Completed</title>
+    <title>Tarefa Concluída</title>
 </head>
 <body>
-    <h1>Task Completed</h1>
+    <h1>Tarefa Concluída</h1>
 
-    <p>Hello {{ $task->user->name }},</p>
+    <p>Olá {{ $task->user->name }},</p>
 
-    <p>Congratulations! The following task has been completed:</p>
+    <p>Parabéns! A seguinte tarefa foi concluída:</p>
 
     <ul>
-        <li><strong>Title:</strong> {{ $task->title }}</li>
-        <li><strong>Description:</strong> {{ $task->description ?? 'N/A' }}</li>
-        <li><strong>Priority:</strong> {{ ucfirst($task->priority) }}</li>
-        <li><strong>Completed At:</strong> {{ $task->updated_at->format('Y-m-d H:i:s') }}</li>
+        <li><strong>Título:</strong> {{ $task->title }}</li>
+        <li><strong>Descrição:</strong> {{ $task->description ?? 'N/A' }}</li>
+        <li><strong>Prioridade:</strong> {{ ucfirst($task->priority) }}</li>
+        <li><strong>Concluída em:</strong> {{ $task->updated_at->format('d/m/Y H:i:s') }}</li>
     </ul>
 
-    <p>Best regards,<br>{{ config('app.name') }}</p>
+    <p>Atenciosamente,<br>{{ config('app.name') }}</p>
 </body>
 </html>

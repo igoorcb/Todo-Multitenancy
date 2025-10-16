@@ -64,7 +64,7 @@ test('tenant_id is filled automatically when creating task', function () {
 
     $response->assertStatus(201);
 
-    $task = Task::find($response->json('id'));
+    $task = Task::find($response->json('data.id'));
 
     expect($task->tenant_id)->toBe($tenant->id);
 });

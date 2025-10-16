@@ -2,23 +2,23 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>New Task Created</title>
+    <title>Nova Tarefa Criada</title>
 </head>
 <body>
-    <h1>New Task Created</h1>
+    <h1>Nova Tarefa Criada</h1>
 
-    <p>Hello {{ $task->user->name }},</p>
+    <p>Olá {{ $task->user->name }},</p>
 
-    <p>A new task has been created:</p>
+    <p>Uma nova tarefa foi criada:</p>
 
     <ul>
-        <li><strong>Title:</strong> {{ $task->title }}</li>
-        <li><strong>Description:</strong> {{ $task->description ?? 'N/A' }}</li>
+        <li><strong>Título:</strong> {{ $task->title }}</li>
+        <li><strong>Descrição:</strong> {{ $task->description ?? 'N/A' }}</li>
         <li><strong>Status:</strong> {{ ucfirst($task->status) }}</li>
-        <li><strong>Priority:</strong> {{ ucfirst($task->priority) }}</li>
-        <li><strong>Due Date:</strong> {{ $task->due_date ? $task->due_date->format('Y-m-d H:i:s') : 'N/A' }}</li>
+        <li><strong>Prioridade:</strong> {{ ucfirst($task->priority) }}</li>
+        <li><strong>Data de Vencimento:</strong> {{ $task->due_date ? $task->due_date->format('d/m/Y H:i:s') : 'N/A' }}</li>
     </ul>
 
-    <p>Best regards,<br>{{ config('app.name') }}</p>
+    <p>Atenciosamente,<br>{{ config('app.name') }}</p>
 </body>
 </html>

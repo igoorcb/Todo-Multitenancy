@@ -24,19 +24,23 @@ test('authenticated user can create task', function () {
 
     $response->assertStatus(201)
         ->assertJsonStructure([
-            'id',
-            'title',
-            'description',
-            'status',
-            'priority',
-            'due_date',
-            'user',
+            'data' => [
+                'id',
+                'title',
+                'description',
+                'status',
+                'priority',
+                'due_date',
+                'user',
+            ],
         ])
         ->assertJson([
-            'title' => 'Test Task',
-            'description' => 'Test Description',
-            'status' => 'pending',
-            'priority' => 'high',
+            'data' => [
+                'title' => 'Test Task',
+                'description' => 'Test Description',
+                'status' => 'pending',
+                'priority' => 'high',
+            ],
         ]);
 
     $this->assertDatabaseHas('tasks', [
@@ -83,8 +87,10 @@ test('authenticated user can view task details', function () {
 
     $response->assertStatus(200)
         ->assertJson([
-            'id' => $task->id,
-            'title' => 'Specific Task',
+            'data' => [
+                'id' => $task->id,
+                'title' => 'Specific Task',
+            ],
         ]);
 });
 
@@ -108,9 +114,11 @@ test('authenticated user can update task', function () {
 
     $response->assertStatus(200)
         ->assertJson([
-            'id' => $task->id,
-            'title' => 'Updated Title',
-            'status' => 'in_progress',
+            'data' => [
+                'id' => $task->id,
+                'title' => 'Updated Title',
+                'status' => 'in_progress',
+            ],
         ]);
 
     $this->assertDatabaseHas('tasks', [

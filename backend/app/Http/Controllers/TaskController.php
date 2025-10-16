@@ -4,48 +4,27 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
+use App\Http\Resources\TaskResource;
 use App\Jobs\SendTaskCompletedEmail;
 use App\Jobs\SendTaskCreatedEmail;
 use App\Models\Task;
+use App\QueryBuilders\TaskQueryBuilder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class TaskController extends Controller
 {
-    public function index(Request $request): JsonResponse
+    public function index(Request $request): AnonymousResourceCollection
     {
         $query = Task::query()->with('user');
 
-        if ($request->has('status')) {
-            $query->where('status', $request->status);
-        }
+        $queryBuilder = new TaskQueryBuilder($query);
+        $filteredQuery = $queryBuilder->applyFilters($request->all())->get();
 
-        if ($request->has('priority')) {
-            $query->where('priority', $request->priority);
-        }
+        $tasks = $filteredQuery->orderBy('created_at', 'desc')->paginate(15);
 
-        if ($request->has('user_id')) {
-            $query->where('user_id', $request->user_id);
-        }
-
-        if ($request->has('search')) {
-            $query->where(function ($q) use ($request) {
-                $q->where('title', 'like', "%{$request->search}%")
-                  ->orWhere('description', 'like', "%{$request->search}%");
-            });
-        }
-
-        if ($request->has('due_date_from')) {
-            $query->where('due_date', '>=', $request->due_date_from);
-        }
-
-        if ($request->has('due_date_to')) {
-            $query->where('due_date', '<=', $request->due_date_to);
-        }
-
-        $tasks = $query->orderBy('created_at', 'desc')->paginate(15);
-
-        return response()->json($tasks);
+        return TaskResource::collection($tasks);
     }
 
     public function store(StoreTaskRequest $request): JsonResponse
@@ -61,15 +40,17 @@ class TaskController extends Controller
 
         SendTaskCreatedEmail::dispatch($task);
 
-        return response()->json($task->load('user'), 201);
+        return (new TaskResource($task->load('user')))
+            ->response()
+            ->setStatusCode(201);
     }
 
-    public function show(Task $task): JsonResponse
+    public function show(Task $task): TaskResource
     {
-        return response()->json($task->load('user'));
+        return new TaskResource($task->load('user'));
     }
 
-    public function update(UpdateTaskRequest $request, Task $task): JsonResponse
+    public function update(UpdateTaskRequest $request, Task $task): TaskResource
     {
         $oldStatus = $task->status;
 
@@ -79,7 +60,7 @@ class TaskController extends Controller
             SendTaskCompletedEmail::dispatch($task);
         }
 
-        return response()->json($task->load('user'));
+        return new TaskResource($task->load('user'));
     }
 
     public function destroy(Task $task): JsonResponse

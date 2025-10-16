@@ -20,7 +20,7 @@ class TaskCompletedMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Task Completed: ' . $this->task->title,
+            subject: 'Tarefa Concluída: ' . $this->task->title,
         );
     }
 

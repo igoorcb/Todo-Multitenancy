@@ -20,14 +20,14 @@ class TasksExport
 
         $headerRow = Row::fromValues([
             'ID',
-            'Title',
-            'Description',
+            'Título',
+            'Descrição',
             'Status',
-            'Priority',
-            'Due Date',
-            'User',
-            'Created At',
-            'Updated At',
+            'Prioridade',
+            'Data de Vencimento',
+            'Usuário',
+            'Criado em',
+            'Atualizado em',
         ]);
         $writer->addRow($headerRow);
 
@@ -69,17 +69,37 @@ class TasksExport
                         $task->id,
                         $task->title,
                         $task->description ?? '',
-                        $task->status,
-                        $task->priority,
-                        $task->due_date?->format('Y-m-d H:i:s') ?? '',
+                        $this->translateStatus($task->status),
+                        $this->translatePriority($task->priority),
+                        $task->due_date?->format('d/m/Y H:i:s') ?? '',
                         $task->user->name,
-                        $task->created_at->format('Y-m-d H:i:s'),
-                        $task->updated_at->format('Y-m-d H:i:s'),
+                        $task->created_at->format('d/m/Y H:i:s'),
+                        $task->updated_at->format('d/m/Y H:i:s'),
                     ]);
                     $writer->addRow($row);
                 }
             });
 
         $writer->close();
+    }
+
+    private function translateStatus(string $status): string
+    {
+        return match ($status) {
+            'pending' => 'Pendente',
+            'in_progress' => 'Em Andamento',
+            'completed' => 'Concluída',
+            default => $status,
+        };
+    }
+
+    private function translatePriority(string $priority): string
+    {
+        return match ($priority) {
+            'low' => 'Baixa',
+            'medium' => 'Média',
+            'high' => 'Alta',
+            default => $priority,
+        };
     }
 }

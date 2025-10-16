@@ -20,7 +20,7 @@ class TaskCreatedMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'New Task Created: ' . $this->task->title,
+            subject: 'Nova Tarefa Criada: ' . $this->task->title,
         );
     }
 
