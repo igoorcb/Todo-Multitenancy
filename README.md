@@ -95,6 +95,7 @@ docker-compose restart app queue
 
 ```bash
 docker-compose exec app php artisan key:generate --force
+docker-compose exec app php artisan jwt:secret --force
 docker-compose exec app php artisan migrate
 ```
 
