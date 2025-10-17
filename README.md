@@ -113,23 +113,13 @@ Siga as instruções interativas para criar:
 - Email do usuário
 - Senha do usuário
 
-### 7. Inicie o Frontend
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-### 8. Acesse a Aplicação
+### 7. Acesse a Aplicação
 
 - **Frontend**: http://localhost:5173
 - **API Backend**: http://localhost:8000
 - **MailHog (emails)**: http://localhost:8025
 
-### Credenciais de Acesso
-
-Use as credenciais criadas no passo 5 para fazer login.
+Use as credenciais criadas no passo 6 para fazer login.
 
 ## Estrutura do Projeto
 
@@ -142,14 +132,18 @@ toDoListMultitenancy/
 │   │   ├── Http/
 │   │   │   ├── Controllers/
 │   │   │   ├── Middleware/
-│   │   │   └── Requests/
+│   │   │   ├── Requests/
+│   │   │   └── Resources/    # API Resources
 │   │   ├── Jobs/         # Jobs de filas
 │   │   ├── Mail/         # Classes de email
 │   │   ├── Models/
+│   │   ├── QueryBuilders/    # Query Builders customizados
 │   │   └── Traits/       # Trait de multitenancy
 │   ├── database/
 │   │   ├── factories/
 │   │   └── migrations/
+│   ├── lang/
+│   │   └── pt_BR/        # Traduções PT-BR
 │   ├── routes/
 │   └── tests/            # Testes Pest
 ├── frontend/             # Vue 3
@@ -229,7 +223,7 @@ docker-compose exec app php artisan test tests/Feature/AuthTest.php
 - ✅ Relacionamentos de models
 - ✅ Validações
 
-Total: 53 testes unitários
+Total: 56 testes (160 assertions)
 
 ## Multitenancy
 
