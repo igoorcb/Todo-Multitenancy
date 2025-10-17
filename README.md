@@ -84,14 +84,21 @@ Isso irá iniciar:
 docker-compose exec app composer install
 ```
 
-### 4. Configure o Backend
+### 4. Configure o Ambiente
 
 ```bash
-docker-compose exec app php artisan key:generate
+cp backend/.env.example backend/.env
+docker-compose restart app queue
+```
+
+### 5. Configure o Backend
+
+```bash
+docker-compose exec app php artisan key:generate --force
 docker-compose exec app php artisan migrate
 ```
 
-### 5. Crie a Primeira Empresa e Usuário
+### 6. Crie a Primeira Empresa e Usuário
 
 ```bash
 docker-compose exec app php artisan tenant:setup
@@ -105,7 +112,7 @@ Siga as instruções interativas para criar:
 - Email do usuário
 - Senha do usuário
 
-### 6. Inicie o Frontend
+### 7. Inicie o Frontend
 
 ```bash
 cd frontend
@@ -113,7 +120,7 @@ npm install
 npm run dev
 ```
 
-### 7. Acesse a Aplicação
+### 8. Acesse a Aplicação
 
 - **Frontend**: http://localhost:5173
 - **API Backend**: http://localhost:8000
