@@ -141,7 +141,7 @@ test('authenticated user can delete task', function () {
 
     $response->assertStatus(200)
         ->assertJson([
-            'message' => 'Task deleted successfully',
+            'message' => 'Tarefa excluída com sucesso',
         ]);
 
     $this->assertDatabaseMissing('tasks', [

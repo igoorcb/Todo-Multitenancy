@@ -132,7 +132,7 @@ test('download returns 404 for non-existent file', function () {
 
     $response->assertStatus(404)
         ->assertJson([
-            'message' => 'File not found or still processing',
+            'message' => 'Arquivo não encontrado ou ainda processando',
         ]);
 });
 
@@ -149,6 +149,6 @@ test('download returns 400 for invalid filename', function () {
 
     $response->assertStatus(400)
         ->assertJson([
-            'message' => 'Invalid filename',
+            'message' => 'Nome de arquivo inválido',
         ]);
 });

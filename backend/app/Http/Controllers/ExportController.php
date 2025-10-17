@@ -21,7 +21,7 @@ class ExportController extends Controller
         GenerateTasksExport::dispatch($tenantId, $userId, $filters, $filename);
 
         return response()->json([
-            'message' => 'Export is being processed',
+            'message' => 'Exportação sendo processada',
             'filename' => $filename,
         ], 202);
     }
@@ -30,7 +30,7 @@ class ExportController extends Controller
     {
         if (!$this->isValidFilename($filename)) {
             return response()->json([
-                'message' => 'Invalid filename'
+                'message' => 'Nome de arquivo inválido'
             ], 400);
         }
 
@@ -53,7 +53,7 @@ class ExportController extends Controller
     {
         if (!$this->isValidFilename($filename)) {
             return response()->json([
-                'message' => 'Invalid filename'
+                'message' => 'Nome de arquivo inválido'
             ], 400);
         }
 
@@ -61,7 +61,7 @@ class ExportController extends Controller
 
         if (!Storage::exists($path)) {
             return response()->json([
-                'message' => 'File not found or still processing'
+                'message' => 'Arquivo não encontrado ou ainda processando'
             ], 404);
         }
 

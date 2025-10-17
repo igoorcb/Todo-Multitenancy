@@ -42,7 +42,7 @@ class AuthController extends Controller
 
         if (!$token = Auth::guard('api')->attempt($credentials)) {
             return response()->json([
-                'message' => 'Invalid credentials'
+                'message' => 'Credenciais inválidas'
             ], 401);
         }
 
@@ -54,7 +54,7 @@ class AuthController extends Controller
         Auth::guard('api')->logout();
 
         return response()->json([
-            'message' => 'Successfully logged out'
+            'message' => 'Logout realizado com sucesso'
         ]);
     }
 
